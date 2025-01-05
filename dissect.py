@@ -495,43 +495,43 @@ for document_num,document in enumerate(documents):
 
             ### Sales Estimation by ASIN from ProfitGuru
 
-            url = f"https://www.profitguru.com/ext/api/asin/{asin}?re=0"
+            # url = f"https://www.profitguru.com/ext/api/asin/{asin}?re=0"
 
-            headers = {
-                "accept": "application/json, text/plain, */*",
-                "accept-language": "en-GB,en-US;q=0.9,en;q=0.8",
-                "priority": "u=1, i",
-                "referer": "https://www.profitguru.com/calculator/sales",
-                "sec-ch-ua": '"Google Chrome";v="131", "Chromium";v="131", "Not_A Brand";v="24"',
-                "sec-ch-ua-mobile": "?0",
-                "cookie":"ir=MjQwMjozYTgwOjQyYmI6NDYxNDpiZGY0OmVlMzI6ZGJjYzoyYTBh; _gcl_au=1.1.1934589467.1736088199; _gid=GA1.2.1629279524.1736088200; _gat_gtag_UA_55885492_5=1; cf_clearance=fekd.mY4Zs6JNLQfBnQagUX5VNRfxLJGhTb7bGtB.nk-1736088201-1.2.1.1-e1Ba91B0TTGaz.bkLTlVe4TvaB58gBrk9q.cmDJlEWifVootP7GoS9240iDa2UQi_a3UAhdYUu.1Tc7x9CRE4fqUdlSe4HPHkFZaxmN34pyo08szZzdZANub62dnMB7mYS9sNGlJQRdSFxtz1O8kSmJycA9I6nBsg236reS2gv1mbumtdkHA9YTWLrIa8pK2CMun1kXkgiZtMTKOMDPJgoQFMWoI7zFAQiEYKXSIUL7ueO1EyhEEmuw2kZzIMB9XoIkTh9UzvARvhdSwl.SGzRjiQgJiDhddXyYxGH1ughNxmCXBQV9swNMwRHfxmwAK2IjOFNdVEm32FFI2V0gzICird4qxq3u4zpVlUJTwaEqbRORhGtOyAGrtlzddCxjpdDgJHLgX88GfdMqsPsIr5Q; _ga=GA1.1.1879257860.1736088200; _ga_BEGQYYES32=GS1.1.1736088199.1.1.1736088210.49.0.0; fda=1",
-                "sec-ch-ua-platform": '"macOS"',
-                "sec-fetch-dest": "empty",
-                "sec-fetch-mode": "cors",
-                "sec-fetch-site": "same-origin",
-                "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
-                "x-app-type": "calc"
-            }
+            # headers = {
+            #     "accept": "application/json, text/plain, */*",
+            #     "accept-language": "en-GB,en-US;q=0.9,en;q=0.8",
+            #     "priority": "u=1, i",
+            #     "referer": "https://www.profitguru.com/calculator/sales",
+            #     "sec-ch-ua": '"Google Chrome";v="131", "Chromium";v="131", "Not_A Brand";v="24"',
+            #     "sec-ch-ua-mobile": "?0",
+            #     "cookie":"ir=MjQwMjozYTgwOjQyYmI6NDYxNDpiZGY0OmVlMzI6ZGJjYzoyYTBh; _gcl_au=1.1.1934589467.1736088199; _gid=GA1.2.1629279524.1736088200; _gat_gtag_UA_55885492_5=1; cf_clearance=fekd.mY4Zs6JNLQfBnQagUX5VNRfxLJGhTb7bGtB.nk-1736088201-1.2.1.1-e1Ba91B0TTGaz.bkLTlVe4TvaB58gBrk9q.cmDJlEWifVootP7GoS9240iDa2UQi_a3UAhdYUu.1Tc7x9CRE4fqUdlSe4HPHkFZaxmN34pyo08szZzdZANub62dnMB7mYS9sNGlJQRdSFxtz1O8kSmJycA9I6nBsg236reS2gv1mbumtdkHA9YTWLrIa8pK2CMun1kXkgiZtMTKOMDPJgoQFMWoI7zFAQiEYKXSIUL7ueO1EyhEEmuw2kZzIMB9XoIkTh9UzvARvhdSwl.SGzRjiQgJiDhddXyYxGH1ughNxmCXBQV9swNMwRHfxmwAK2IjOFNdVEm32FFI2V0gzICird4qxq3u4zpVlUJTwaEqbRORhGtOyAGrtlzddCxjpdDgJHLgX88GfdMqsPsIr5Q; _ga=GA1.1.1879257860.1736088200; _ga_BEGQYYES32=GS1.1.1736088199.1.1.1736088210.49.0.0; fda=1",
+            #     "sec-ch-ua-platform": '"macOS"',
+            #     "sec-fetch-dest": "empty",
+            #     "sec-fetch-mode": "cors",
+            #     "sec-fetch-site": "same-origin",
+            #     "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
+            #     "x-app-type": "calc"
+            # }
 
-            response = requests.get(url, headers=headers)
+            # response = requests.get(url, headers=headers)
 
-            print(response.status_code)
+            # print(response.status_code)
 
-            sales_est = json.loads(response.text)
+            # sales_est = json.loads(response.text)
 
-            url = f"https://www.profitguru.com/api/product/{sales_est.get('product').get('id')}/history/data"
+            # url = f"https://www.profitguru.com/api/product/{sales_est.get('product').get('id')}/history/data"
 
 
-            response = requests.get(url, headers=headers)
+            # response = requests.get(url, headers=headers)
 
-            sales_est_B = json.loads(response.text)
-            sales_est_B.get('data').get('fees')
+            # sales_est_B = json.loads(response.text)
+            # sales_est_B.get('data').get('fees')
 
-            product_df['analysis.ProfitGuruSalesEstimate']       = [sales_est.get('product').get('sales30')]
-            product_df['caculation.ProfitGuruTotalFBACost']      =  [sales_est_B.get('data').get('fees').get('total')]
-            product_df['caculation.ProfitGuruFBAFulfilmentCost'] =  [sales_est_B.get('data').get('fees').get('fba')]
-            product_df['caculation.ProfitGuruAmazonReferalCost'] =  [sales_est_B.get('data').get('fees').get('ref')]
-            product_df['caculation.ProfitGuruAmazonStorageCost'] =  [sales_est_B.get('data').get('fees').get('storage')]
+            # product_df['analysis.ProfitGuruSalesEstimate']       = [sales_est.get('product').get('sales30')]
+            # product_df['caculation.ProfitGuruTotalFBACost']      =  [sales_est_B.get('data').get('fees').get('total')]
+            # product_df['caculation.ProfitGuruFBAFulfilmentCost'] =  [sales_est_B.get('data').get('fees').get('fba')]
+            # product_df['caculation.ProfitGuruAmazonReferalCost'] =  [sales_est_B.get('data').get('fees').get('ref')]
+            # product_df['caculation.ProfitGuruAmazonStorageCost'] =  [sales_est_B.get('data').get('fees').get('storage')]
 
             credentials=dict(
                     refresh_token=SP_API_REFRESH_TOKEN,
@@ -595,11 +595,11 @@ for document_num,document in enumerate(documents):
 
             # Input Data
             cost_price = cost_price
-            shipping_to_amazon = 0.5
-            referral_fee = sales_est_B.get('data').get('fees').get('ref')
-            storage_fee = sales_est_B.get('data').get('fees').get('storage')
-            fba_fees = sales_est_B.get('data').get('fees').get('fba')
+            shipping_to_amazon = 0.8
+            storage_fee = 0
+            fba_fees = product['products'][0]['fbaFees']['pickAndPackFee']/100
             sell_price = products.payload.get('Summary').get('LowestPrices')[0].get('LandedPrice').get('Amount')
+            referral_fee = sell_price * (product['products'][0]['referralFeePercent']/100)
 
             # Calculate Metrics
             metrics = calculate_metrics(sell_price, referral_fee, fba_fees, storage_fee, shipping_to_amazon, cost_price)
