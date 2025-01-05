@@ -49,7 +49,7 @@ documents = product_collection.find()
 print(documents)
 
 documents_list = list(product_collection.find()
-print(documents_list)
+                      
 
 documents_dict = {
     document["_id"]: document
@@ -57,6 +57,7 @@ documents_dict = {
 }
 
 print(documents_dict)
+print(documents_list)
 
 
 # with open("config.yaml", "r") as file:
