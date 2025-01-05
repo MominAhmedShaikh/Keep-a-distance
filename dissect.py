@@ -45,7 +45,7 @@ product_analysis_collection = db[PRODUCT_ANALYSIS_COLLECTION]
 product_collection = db[PRODUCT_COLLECTION]
 product_inventory_collection = db[PRODUCT_INVENTORY_COLLECTION]
 
-documents = product_collection.find()
+documents = product_collection.find({}, no_cursor_timeout=True)
 
 # with open("config.yaml", "r") as file:
 #     config = yaml.safe_load(file)
