@@ -79,6 +79,7 @@ for document_num,document in enumerate(documents):
         print(product)
 
         ref_fee = (product['products'][0]['referralFeePercent']/100)
+        fba_fees = product['products'][0]['fbaFees']['pickAndPackFee']/100
 
         # print(f"Product structure: {product}")  # Debug: Print the entire product dictionary
 
@@ -599,7 +600,7 @@ for document_num,document in enumerate(documents):
             cost_price = cost_price
             shipping_to_amazon = 0.8
             storage_fee = 0
-            fba_fees = product['products'][0]['fbaFees']['pickAndPackFee']/100
+            fba_fees = fba_fees
             sell_price = products.payload.get('Summary').get('LowestPrices')[0].get('LandedPrice').get('Amount')
             referral_fee = sell_price * ref_fee
 
