@@ -620,6 +620,7 @@ for document_num,document in enumerate(documents):
             product_analysis_collection.insert_one(json.loads(product_df.to_json(orient='records'))[0])
 
             print('Successufully Added the records')
+            client.close()
     except Exception as e:
         print(f"Error in the {asin} - {e}")
         traceback.print_exc()
