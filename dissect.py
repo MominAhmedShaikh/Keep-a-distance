@@ -73,7 +73,9 @@ for document_num,document in enumerate(documents):
         headers = {}
 
         product = requests.request("GET", url, headers=headers, data=payload)
+        print(product)
         product = json.loads(product.text)
+        print(product)
 
         # print(f"Product structure: {product}")  # Debug: Print the entire product dictionary
 
