@@ -46,7 +46,7 @@ product_collection = db[PRODUCT_COLLECTION]
 product_inventory_collection = db[PRODUCT_INVENTORY_COLLECTION]
 
 
-documents_list = list(product_collection.find())
+documents = list(product_collection.find())
                     
 
 # with open("config.yaml", "r") as file:
