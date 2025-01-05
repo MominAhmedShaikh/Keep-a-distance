@@ -19,6 +19,8 @@ from utils import *
 
 warnings.filterwarnings("ignore", category=RuntimeWarning)
 
+print("Enter Code")
+
 load_dotenv()
 
 KEEPA_API_KEY = os.getenv("KEEPA_API_KEY")
@@ -41,6 +43,7 @@ product_inventory_collection = db[PRODUCT_INVENTORY_COLLECTION]
 
 documents = product_collection.find()
 
+print("Enter Code 1")
 
 
 # with open("config.yaml", "r") as file:
@@ -55,6 +58,9 @@ rating           = 1
 buybox           = 1
 offers_k         = 100
 stock            = 1
+
+
+print("Enter Code 2")
 
 
 for document_num,document in enumerate(documents):
