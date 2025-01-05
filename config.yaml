@@ -1,0 +1,12 @@
+asin_details:
+  asin: "B00M1UE4V8"
+keepa_details:
+  KEEPA_ST_ORDINAL: "2011-01-01"
+  only-live-offers: 1
+  domain: 1
+  update: 1
+  history: 1
+  rating: 1
+  buybox: 1
+  stock: 1
+  offers: 100
