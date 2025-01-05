@@ -61,7 +61,7 @@ offers_k         = 100
 stock            = 1
 
 
-
+print('Started!!')
 
 for document_num,document in enumerate(documents):
     asin = document.get("ASIN", "ASIN not found")
@@ -77,6 +77,8 @@ for document_num,document in enumerate(documents):
 
         ref_fee = (product['products'][0]['referralFeePercent']/100)
         fba_fees = product['products'][0]['fbaFees']['pickAndPackFee']/100
+
+        print(asin,fba_fees,ref_fee)
 
         # print(f"Product structure: {product}")  # Debug: Print the entire product dictionary
 
