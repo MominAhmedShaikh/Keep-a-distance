@@ -19,8 +19,6 @@ from utils import *
 
 warnings.filterwarnings("ignore", category=RuntimeWarning)
 
-print("Enter Code")
-
 # load_dotenv()
 
 KEEPA_API_KEY                = os.environ["KEEPA_API_KEY"]
@@ -48,9 +46,6 @@ product_inventory_collection = db[PRODUCT_INVENTORY_COLLECTION]
 
 documents = product_collection.find()
 
-print("Enter Code 1")
-
-
 # with open("config.yaml", "r") as file:
 #     config = yaml.safe_load(file)
 
@@ -74,13 +69,11 @@ for document_num,document in enumerate(documents):
     print(document_num,asin,vendor_sku)
     try:
         url = f"https://api.keepa.com/product?key={KEEPA_API_KEY}&domain={domain}&asin={asin}&update={update}&history={history}&only-live-offers={only_live_offers}&rating={rating}&buybox={buybox}&stock={stock}&offers={offers_k}"
-        print(url)
         payload = {}
         headers = {}
 
         product = requests.request("GET", url, headers=headers, data=payload)
         product = json.loads(product.text)
-        print(product)
 
         # print(f"Product structure: {product}")  # Debug: Print the entire product dictionary
 
