@@ -19,7 +19,6 @@ from utils import *
 
 warnings.filterwarnings("ignore", category=RuntimeWarning)
 
-print('Enter Code')
 load_dotenv()
 
 KEEPA_API_KEY = os.getenv("KEEPA_API_KEY")
@@ -32,8 +31,6 @@ PRODUCT_ANALYSIS_COLLECTION = os.getenv("PRODUCT_ANALYSIS_COLLECTION")
 PRODUCT_COLLECTION = os.getenv("PRODUCT_COLLECTION")
 PRODUCT_INVENTORY_COLLECTION = os.getenv("PRODUCT_INVENTORY_COLLECTION")
 URI = os.getenv("URI")
-
-print('Variables Loaded')
 
 client = MongoClient(URI)
 db = client[DATABASE_NAME]
