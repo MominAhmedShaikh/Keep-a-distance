@@ -15,6 +15,7 @@ import requests
 import json
 import yaml
 import os
+import traceback
 from utils import *
 
 warnings.filterwarnings("ignore", category=RuntimeWarning)
@@ -618,3 +619,4 @@ for document_num,document in enumerate(documents):
             print('Successufully Added the records')
     except Exception as e:
         print(f"Error in the {asin} - {e}")
+        traceback.print_exc()
