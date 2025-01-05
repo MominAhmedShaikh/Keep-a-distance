@@ -24,9 +24,16 @@ jobs:
           
       - name: execute py script # run main.py
         env:
-          DB_ACCESS_URI: ${{ secrets.DB_ACCESS_URI }}
-          BASE_URL     : ${{ secrets.BASE_URL }}
-          HEADERS      : ${{ secrets.HEADERS }}
+          KEEPA_API_KEY                   : ${{ secrets.KEEPA_API_KEY }}
+          SP_API_REFRESH_TOKEN            : ${{ secrets.SP_API_REFRESH_TOKEN }}
+          LWA_APP_ID                      : ${{ secrets.LWA_APP_ID }}
+          LWA_CLIENT_SECRET               : ${{ secrets.LWA_CLIENT_SECRET }}
+          URI                             : ${{ secrets.URI }}
+          DATABASE_NAME                   : ${{ secrets.DATABASE_NAME }}
+          ERROR_COLLECTION                : ${{ secrets.ERROR_COLLECTION }}
+          PRODUCT_ANALYSIS_COLLECTION     : ${{ secrets.PRODUCT_ANALYSIS_COLLECTION}}
+          PRODUCT_COLLECTION              : ${{ secrets.PRODUCT_COLLECTION }}
+          PRODUCT_INVENTORY_COLLECTION    : ${{ secrets.PRODUCT_INVENTORY_COLLECTION }}
 
         run: python dissect.py
           
