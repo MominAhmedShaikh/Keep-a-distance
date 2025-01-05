@@ -61,7 +61,6 @@ offers_k         = 100
 stock            = 1
 
 
-print("Enter Code 2")
 
 
 for document_num,document in enumerate(documents):
@@ -74,9 +73,7 @@ for document_num,document in enumerate(documents):
         headers = {}
 
         product = requests.request("GET", url, headers=headers, data=payload)
-        print(product)
         product = json.loads(product.text)
-        print(product)
 
         ref_fee = (product['products'][0]['referralFeePercent']/100)
         fba_fees = product['products'][0]['fbaFees']['pickAndPackFee']/100
