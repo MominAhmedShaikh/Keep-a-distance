@@ -493,6 +493,8 @@ for document_num,document in enumerate(documents):
 
             ### Sales Estimation by ASIN from ProfitGuru
 
+            ### Sales Estimation by ASIN from ProfitGuru
+
             url = f"https://www.profitguru.com/ext/api/asin/{asin}?re=0"
 
             headers = {
@@ -512,18 +514,9 @@ for document_num,document in enumerate(documents):
 
             response = requests.get(url, headers=headers)
 
-            if response.status_code != 200:
-                print(f"API returned an error: {response.status_code}, {response.text}")
-            elif not response.text.strip():
-                print("API returned an empty response.")
-            else:
-                try:
-                    sales_est = json.loads(response.text)
-                    print(sales_est)
-                except json.JSONDecodeError as e:
-                    print(f"Failed to parse JSON: {e}")
+            print(response.status_code)
 
-
+            sales_est = json.loads(response.text)
 
             url = f"https://www.profitguru.com/api/product/{sales_est.get('product').get('id')}/history/data"
 
@@ -538,8 +531,6 @@ for document_num,document in enumerate(documents):
             product_df['caculation.ProfitGuruFBAFulfilmentCost'] =  [sales_est_B.get('data').get('fees').get('fba')]
             product_df['caculation.ProfitGuruAmazonReferalCost'] =  [sales_est_B.get('data').get('fees').get('ref')]
             product_df['caculation.ProfitGuruAmazonStorageCost'] =  [sales_est_B.get('data').get('fees').get('storage')]
-
-
 
             credentials=dict(
                     refresh_token=SP_API_REFRESH_TOKEN,
