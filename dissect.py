@@ -68,8 +68,8 @@ print('Started!!')
 for document_num,document in enumerate(documents):
     asin = document.get("ASIN", "ASIN not found")
     vendor_sku = document.get("Vendor SKU", "Vendor SKU not found")
-    print(document_num,asin,vendor_sku)
     try:
+        print(document_num,asin,vendor_sku)
         url = f"https://api.keepa.com/product?key={KEEPA_API_KEY}&domain={domain}&asin={asin}&update={update}&history={history}&only-live-offers={only_live_offers}&rating={rating}&buybox={buybox}&stock={stock}&offers={offers_k}"
         payload = {}
         headers = {}
