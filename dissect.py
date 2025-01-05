@@ -78,6 +78,8 @@ for document_num,document in enumerate(documents):
         product = json.loads(product.text)
         print(product)
 
+        ref_fee = (product['products'][0]['referralFeePercent']/100)
+
         # print(f"Product structure: {product}")  # Debug: Print the entire product dictionary
 
         tokens_left = product.get("tokensLeft")
@@ -599,7 +601,7 @@ for document_num,document in enumerate(documents):
             storage_fee = 0
             fba_fees = product['products'][0]['fbaFees']['pickAndPackFee']/100
             sell_price = products.payload.get('Summary').get('LowestPrices')[0].get('LandedPrice').get('Amount')
-            referral_fee = sell_price * (product['products'][0]['referralFeePercent']/100)
+            referral_fee = sell_price * ref_fee
 
             # Calculate Metrics
             metrics = calculate_metrics(sell_price, referral_fee, fba_fees, storage_fee, shipping_to_amazon, cost_price)
