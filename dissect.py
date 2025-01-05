@@ -504,6 +504,7 @@ for document_num,document in enumerate(documents):
                 "referer": "https://www.profitguru.com/calculator/sales",
                 "sec-ch-ua": '"Google Chrome";v="131", "Chromium";v="131", "Not_A Brand";v="24"',
                 "sec-ch-ua-mobile": "?0",
+                "cookie":"ir=MjQwMjozYTgwOjQyYmI6NDYxNDpiZGY0OmVlMzI6ZGJjYzoyYTBh; _gcl_au=1.1.1934589467.1736088199; _gid=GA1.2.1629279524.1736088200; _gat_gtag_UA_55885492_5=1; cf_clearance=fekd.mY4Zs6JNLQfBnQagUX5VNRfxLJGhTb7bGtB.nk-1736088201-1.2.1.1-e1Ba91B0TTGaz.bkLTlVe4TvaB58gBrk9q.cmDJlEWifVootP7GoS9240iDa2UQi_a3UAhdYUu.1Tc7x9CRE4fqUdlSe4HPHkFZaxmN34pyo08szZzdZANub62dnMB7mYS9sNGlJQRdSFxtz1O8kSmJycA9I6nBsg236reS2gv1mbumtdkHA9YTWLrIa8pK2CMun1kXkgiZtMTKOMDPJgoQFMWoI7zFAQiEYKXSIUL7ueO1EyhEEmuw2kZzIMB9XoIkTh9UzvARvhdSwl.SGzRjiQgJiDhddXyYxGH1ughNxmCXBQV9swNMwRHfxmwAK2IjOFNdVEm32FFI2V0gzICird4qxq3u4zpVlUJTwaEqbRORhGtOyAGrtlzddCxjpdDgJHLgX88GfdMqsPsIr5Q; _ga=GA1.1.1879257860.1736088200; _ga_BEGQYYES32=GS1.1.1736088199.1.1.1736088210.49.0.0; fda=1",
                 "sec-ch-ua-platform": '"macOS"',
                 "sec-fetch-dest": "empty",
                 "sec-fetch-mode": "cors",
