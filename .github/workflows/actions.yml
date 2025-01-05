@@ -1,28 +1,27 @@
 name: Run dissect.py Once
 
 on:
-  workflow_dispatch: # Use workflow dispatch instead of schedule
-
+  workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout repository content
+        uses: actions/checkout@v3
 
-      - name: checkout repo content
-        uses: actions/checkout@v2 # checkout the repository content to github runner
-
-      - name: setup python
+      - name: Setup Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.9' # install the python version needed
-          
-      - name: install python packages
+          python-version: '3.9'
+
+      - name: Install Python packages
         run: |
+          set -eux
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-          
-      - name: execute py script # run main.py
+
+      - name: Execute dissect.py
         env:
           KEEPA_API_KEY                   : ${{ secrets.KEEPA_API_KEY }}
           SP_API_REFRESH_TOKEN            : ${{ secrets.SP_API_REFRESH_TOKEN }}
@@ -31,21 +30,17 @@ jobs:
           URI                             : ${{ secrets.URI }}
           DATABASE_NAME                   : ${{ secrets.DATABASE_NAME }}
           ERROR_COLLECTION                : ${{ secrets.ERROR_COLLECTION }}
-          PRODUCT_ANALYSIS_COLLECTION     : ${{ secrets.PRODUCT_ANALYSIS_COLLECTION}}
+          PRODUCT_ANALYSIS_COLLECTION     : ${{ secrets.PRODUCT_ANALYSIS_COLLECTION }}
           PRODUCT_COLLECTION              : ${{ secrets.PRODUCT_COLLECTION }}
           PRODUCT_INVENTORY_COLLECTION    : ${{ secrets.PRODUCT_INVENTORY_COLLECTION }}
-
         run: python dissect.py
-          
-      - name: commit files
+
+      - name: Commit changes
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add -A
           git diff-index --quiet HEAD || (git commit -a -m "updated logs" --allow-empty)
-          
-      - name: push changes
-        uses: ad-m/github-push-action@v0.6.0
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: main
+
+      - name: Push changes
+        run: git push origin main
