@@ -512,7 +512,18 @@ for document_num,document in enumerate(documents):
 
             response = requests.get(url, headers=headers)
 
-            sales_est = json.loads(response.text)
+            if response.status_code != 200:
+                print(f"API returned an error: {response.status_code}, {response.text}")
+            elif not response.text.strip():
+                print("API returned an empty response.")
+            else:
+                try:
+                    sales_est = json.loads(response.text)
+                    print(sales_est)
+                except json.JSONDecodeError as e:
+                    print(f"Failed to parse JSON: {e}")
+
+
 
             url = f"https://www.profitguru.com/api/product/{sales_est.get('product').get('id')}/history/data"
 
