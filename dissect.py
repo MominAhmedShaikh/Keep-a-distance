@@ -4,7 +4,7 @@ from pymongo.server_api import ServerApi
 from bs4 import BeautifulSoup
 from functools import reduce
 from bson import json_util
-from dotenv import load_dotenv
+# from dotenv import load_dotenv
 from sp_api.api import Products
 import numpy as np
 import math
@@ -21,18 +21,18 @@ warnings.filterwarnings("ignore", category=RuntimeWarning)
 
 print("Enter Code")
 
-load_dotenv()
+# load_dotenv()
 
-KEEPA_API_KEY = os.getenv("KEEPA_API_KEY")
-LWA_APP_ID = os.getenv("LWA_APP_ID")
-LWA_CLIENT_SECRET = os.getenv("LWA_CLIENT_SECRET")
-SP_API_REFRESH_TOKEN = os.getenv("SP_API_REFRESH_TOKEN")
-DATABASE_NAME = os.getenv("DATABASE_NAME")
-ERROR_COLLECTION = os.getenv("ERROR_COLLECTION")
-PRODUCT_ANALYSIS_COLLECTION = os.getenv("PRODUCT_ANALYSIS_COLLECTION")
-PRODUCT_COLLECTION = os.getenv("PRODUCT_COLLECTION")
-PRODUCT_INVENTORY_COLLECTION = os.getenv("PRODUCT_INVENTORY_COLLECTION")
-URI = os.getenv("URI")
+KEEPA_API_KEY                = os.environ["KEEPA_API_KEY"]
+LWA_APP_ID                   = os.environ["LWA_APP_ID"]
+LWA_CLIENT_SECRET            = os.environ["LWA_CLIENT_SECRET"]
+SP_API_REFRESH_TOKEN         = os.environ["SP_API_REFRESH_TOKEN"]
+DATABASE_NAME                = os.environ["DATABASE_NAME"]
+ERROR_COLLECTION             = os.environ["ERROR_COLLECTION"]
+PRODUCT_ANALYSIS_COLLECTION  = os.environ["PRODUCT_ANALYSIS_COLLECTION"]
+PRODUCT_COLLECTION           = os.environ["PRODUCT_COLLECTION"]
+PRODUCT_INVENTORY_COLLECTION = os.environ["PRODUCT_INVENTORY_COLLECTION"]
+URI                          = os.environ["URI"]
 
 client = MongoClient(URI)
 db = client[DATABASE_NAME]
@@ -69,11 +69,12 @@ for document_num,document in enumerate(documents):
     print(document_num,asin,vendor_sku)
     try:
         url = f"https://api.keepa.com/product?key={KEEPA_API_KEY}&domain={domain}&asin={asin}&update={update}&history={history}&only-live-offers={only_live_offers}&rating={rating}&buybox={buybox}&stock={stock}&offers={offers_k}"
-
+        
         payload = {}
         headers = {}
 
         product = requests.request("GET", url, headers=headers, data=payload)
+        print(product)
         product = json.loads(product.text)
 
         # print(f"Product structure: {product}")  # Debug: Print the entire product dictionary
