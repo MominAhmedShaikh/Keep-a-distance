@@ -34,6 +34,8 @@ PRODUCT_COLLECTION           = os.environ["PRODUCT_COLLECTION"]
 PRODUCT_INVENTORY_COLLECTION = os.environ["PRODUCT_INVENTORY_COLLECTION"]
 URI                          = os.environ["URI"]
 
+print(KEEPA_API_KEY)
+
 client = MongoClient(URI)
 db = client[DATABASE_NAME]
 error_collection = db[ERROR_COLLECTION]
