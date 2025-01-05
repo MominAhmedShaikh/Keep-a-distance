@@ -43,18 +43,18 @@ documents = product_collection.find()
 
 
 
-with open("config.yaml", "r") as file:
-    config = yaml.safe_load(file)
+# with open("config.yaml", "r") as file:
+#     config = yaml.safe_load(file)
 
-KEEPA_ST_ORDINAL = config["keepa_details"]["KEEPA_ST_ORDINAL"]
-only_live_offers = config["keepa_details"]["only-live-offers"]
-domain           = config["keepa_details"]["domain"]
-update           = config["keepa_details"]["update"]
-history          = config["keepa_details"]["history"]
-rating           = config["keepa_details"]["rating"]
-buybox           = config["keepa_details"]["buybox"]
-offers_k           = config["keepa_details"]["offers"]
-stock            = config["keepa_details"]["stock"]
+KEEPA_ST_ORDINAL = "2011-01-01"
+only_live_offers = 1
+domain           = 1
+update           = 1
+history          = 1
+rating           = 1
+buybox           = 1
+offers_k         = 100
+stock            = 1
 
 
 for document_num,document in enumerate(documents):
