@@ -45,7 +45,19 @@ product_analysis_collection = db[PRODUCT_ANALYSIS_COLLECTION]
 product_collection = db[PRODUCT_COLLECTION]
 product_inventory_collection = db[PRODUCT_INVENTORY_COLLECTION]
 
-documents = product_collection.find({}, no_cursor_timeout=True)
+documents = product_collection.find()
+print(documents)
+
+documents_list = list(product_collection.find()
+print(documents_list)
+
+documents_dict = {
+    document["_id"]: document
+    for document in product_collection.find()
+}
+
+print(documents_dict)
+
 
 # with open("config.yaml", "r") as file:
 #     config = yaml.safe_load(file)
