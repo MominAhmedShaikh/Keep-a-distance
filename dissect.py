@@ -4,7 +4,7 @@ from pymongo.server_api import ServerApi
 from bs4 import BeautifulSoup
 from functools import reduce
 from bson import json_util
-# from dotenv import load_dotenv
+from dotenv import load_dotenv
 from sp_api.api import Products
 import numpy as np
 import math
@@ -15,28 +15,23 @@ import requests
 import json
 import yaml
 import os
-import traceback
 from utils import *
+import traceback
 
 warnings.filterwarnings("ignore", category=RuntimeWarning)
 
-# load_dotenv()
+load_dotenv()
 
-KEEPA_API_KEY                = os.environ["KEEPA_API_KEY"]
-LWA_APP_ID                   = os.environ["LWA_APP_ID"]
-LWA_CLIENT_SECRET            = os.environ["LWA_CLIENT_SECRET"]
-SP_API_REFRESH_TOKEN         = os.environ["SP_API_REFRESH_TOKEN"]
-DATABASE_NAME                = os.environ["DATABASE_NAME"]
-ERROR_COLLECTION             = os.environ["ERROR_COLLECTION"]
-PRODUCT_ANALYSIS_COLLECTION  = os.environ["PRODUCT_ANALYSIS_COLLECTION"]
-PRODUCT_COLLECTION           = os.environ["PRODUCT_COLLECTION"]
-PRODUCT_INVENTORY_COLLECTION = os.environ["PRODUCT_INVENTORY_COLLECTION"]
-URI                          = os.environ["URI"]
-
-try:
-    KEEPA_API_KEY = os.environ["KEEPA_API_KEY"]
-except KeyError:
-    raise RuntimeError("Missing required environment variable: KEEPA_API_KEY")
+KEEPA_API_KEY = os.getenv("KEEPA_API_KEY")
+LWA_APP_ID = os.getenv("LWA_APP_ID")
+LWA_CLIENT_SECRET = os.getenv("LWA_CLIENT_SECRET")
+SP_API_REFRESH_TOKEN = os.getenv("SP_API_REFRESH_TOKEN")
+DATABASE_NAME = os.getenv("DATABASE_NAME")
+ERROR_COLLECTION = os.getenv("ERROR_COLLECTION")
+PRODUCT_ANALYSIS_COLLECTION = os.getenv("PRODUCT_ANALYSIS_COLLECTION")
+PRODUCT_COLLECTION = os.getenv("PRODUCT_COLLECTION")
+PRODUCT_INVENTORY_COLLECTION = os.getenv("PRODUCT_INVENTORY_COLLECTION")
+URI = os.getenv("URI")
 
 client = MongoClient(URI)
 db = client[DATABASE_NAME]
@@ -45,42 +40,35 @@ product_analysis_collection = db[PRODUCT_ANALYSIS_COLLECTION]
 product_collection = db[PRODUCT_COLLECTION]
 product_inventory_collection = db[PRODUCT_INVENTORY_COLLECTION]
 
-
 documents = list(product_collection.find())
-                    
 
-# with open("config.yaml", "r") as file:
-#     config = yaml.safe_load(file)
+with open("config.yaml", "r") as file:
+    config = yaml.safe_load(file)
 
-KEEPA_ST_ORDINAL = "2011-01-01"
-only_live_offers = 1
-domain           = 1
-update           = 1
-history          = 1
-rating           = 1
-buybox           = 1
-offers_k         = 100
-stock            = 1
+KEEPA_ST_ORDINAL = config["keepa_details"]["KEEPA_ST_ORDINAL"]
+only_live_offers = config["keepa_details"]["only-live-offers"]
+domain           = config["keepa_details"]["domain"]
+update           = config["keepa_details"]["update"]
+history          = config["keepa_details"]["history"]
+rating           = config["keepa_details"]["rating"]
+buybox           = config["keepa_details"]["buybox"]
+offers_k         = config["keepa_details"]["offers"]
+stock            = config["keepa_details"]["stock"]
 
-
-print('Started!!')
 
 for document_num,document in enumerate(documents):
+    print(document)
     asin = document.get("ASIN", "ASIN not found")
     vendor_sku = document.get("Vendor SKU", "Vendor SKU not found")
+    print(document_num,asin,vendor_sku)
     try:
-        print(document_num,asin,vendor_sku)
         url = f"https://api.keepa.com/product?key={KEEPA_API_KEY}&domain={domain}&asin={asin}&update={update}&history={history}&only-live-offers={only_live_offers}&rating={rating}&buybox={buybox}&stock={stock}&offers={offers_k}"
+
         payload = {}
         headers = {}
 
         product = requests.request("GET", url, headers=headers, data=payload)
         product = json.loads(product.text)
-
-        ref_fee = (product['products'][0]['referralFeePercent']/100)
-        fba_fees = product['products'][0]['fbaFees']['pickAndPackFee']/100
-
-        print(asin,fba_fees,ref_fee)
 
         # print(f"Product structure: {product}")  # Debug: Print the entire product dictionary
 
@@ -379,31 +367,82 @@ for document_num,document in enumerate(documents):
             product_df['analysis.DaysDiffBuyBoxAppearance']     = product_df['analysis.DaysDiffBuyBoxAppearance'].astype('str')
             product_df['analysis.FirstDateBuyBoxAppearance']    = product_df['analysis.FirstDateBuyBoxAppearance'].astype('str')
 
-            metrics_30d = calculate_occupancy_metrics(buybox_df, 30)
-            metrics_60d = calculate_occupancy_metrics(buybox_df, 60)
-            metrics_90d = calculate_occupancy_metrics(buybox_df, 90)
-            metrics_180d = calculate_occupancy_metrics(buybox_df,180)
-            metrics_360d = calculate_occupancy_metrics(buybox_df,360)
+            # metrics_30d = calculate_occupancy_metrics(buybox_df, 30)
+            # metrics_60d = calculate_occupancy_metrics(buybox_df, 60)
+            # metrics_90d = calculate_occupancy_metrics(buybox_df, 90)
+            # metrics_180d = calculate_occupancy_metrics(buybox_df,180)
+            # metrics_360d = calculate_occupancy_metrics(buybox_df,360)
 
 
-            metrics_df = [
-                metrics_30d['seller_occupancy'].rename(columns={'TotalTimeOccupiedMinutes':'TotalTimeOccupiedMinutes30D'}),
-                metrics_60d['seller_occupancy'].rename(columns={'TotalTimeOccupiedMinutes':'TotalTimeOccupiedMinutes60D'}),
-                metrics_90d['seller_occupancy'].rename(columns={'TotalTimeOccupiedMinutes':'TotalTimeOccupiedMinutes90D'}),
-                metrics_180d['seller_occupancy'].rename(columns={'TotalTimeOccupiedMinutes':'TotalTimeOccupiedMinutes180D'}),
-                metrics_360d['seller_occupancy'].rename(columns={'TotalTimeOccupiedMinutes':'TotalTimeOccupiedMinutes360D'})
-            ]
+            # metrics_df = [
+            #     metrics_30d['seller_occupancy'].rename(columns={'TotalTimeOccupiedMinutes':'TotalTimeOccupiedMinutes30D'}),
+            #     metrics_60d['seller_occupancy'].rename(columns={'TotalTimeOccupiedMinutes':'TotalTimeOccupiedMinutes60D'}),
+            #     metrics_90d['seller_occupancy'].rename(columns={'TotalTimeOccupiedMinutes':'TotalTimeOccupiedMinutes90D'}),
+            #     metrics_180d['seller_occupancy'].rename(columns={'TotalTimeOccupiedMinutes':'TotalTimeOccupiedMinutes180D'}),
+            #     metrics_360d['seller_occupancy'].rename(columns={'TotalTimeOccupiedMinutes':'TotalTimeOccupiedMinutes360D'})
+            # ]
 
-            # Perform an outer join on all DataFrames using `reduce`
-            metrics_merged_df = reduce(lambda left, right: pd.merge(left, right, on='BuyBoxSeller', how='outer'), metrics_df)
-            metrics_merged_df['SellerName'] = metrics_merged_df['BuyBoxSeller'].apply(
-                lambda x: get_seller_name(KEEPA_API_KEY, domain, x)
-            )
+            # # Perform an outer join on all DataFrames using `reduce`
+            # metrics_merged_df = reduce(lambda left, right: pd.merge(left, right, on='BuyBoxSeller', how='outer'), metrics_df)
+            # metrics_merged_df['SellerName'] = metrics_merged_df['BuyBoxSeller'].apply(
+            #     lambda x: get_seller_name(KEEPA_API_KEY, domain, x)
+            # )
 
-            metrics_merged_df.fillna(0)
-            metrics_merged_df = metrics_merged_df.where(metrics_merged_df.notnull(), None)
-            product_df['analysis.BuyBoxHistAnalysis'] = [metrics_merged_df.to_json(orient='records')] * len(product_df)
+            # metrics_merged_df.fillna(0)
+            # metrics_merged_df = metrics_merged_df.where(metrics_merged_df.notnull(), None)
+            # product_df['analysis.BuyBoxHistAnalysis'] = [metrics_merged_df.to_json(orient='records')] * len(product_df)
 
+            # Calculate metrics for different time windows
+            time_windows = [30, 60, 90, 180, 360]
+            metrics_data = {}
+
+            # Collect metrics, handling potential issues with the return values
+            for days in time_windows:
+                metrics = calculate_occupancy_metrics(buybox_df, days)
+                
+                # Ensure metrics is a tuple and contains a valid dictionary or DataFrame
+                if isinstance(metrics, tuple):
+                    # Check if the first element is a dictionary
+                    if isinstance(metrics[0], dict) and 'seller_occupancy' in metrics[0]:
+                        metrics_data[days] = metrics[0]['seller_occupancy']  # Extract seller_occupancy
+                    else:
+                        metrics_data[days] = None  # Invalid or empty
+                else:
+                    metrics_data[days] = None  # Invalid or unexpected structure
+
+            # Prepare the list of DataFrames for merging
+            metrics_df = []
+            for days, df in metrics_data.items():
+                if df is not None and isinstance(df, pd.DataFrame):
+                    renamed_df = df.rename(
+                        columns={'TotalTimeOccupiedMinutes': f'TotalTimeOccupiedMinutes{days}'}  # Rename column
+                    )
+                    metrics_df.append(renamed_df)
+                else:
+                    print(f"Skipping metrics for {days} days due to invalid or empty data.")
+
+            # Perform an outer join on all valid DataFrames
+            if metrics_df:
+                metrics_merged_df = reduce(
+                    lambda left, right: pd.merge(left, right, on='BuyBoxSeller', how='outer'),
+                    metrics_df
+                )
+                
+                # Add SellerName column by applying a function
+                metrics_merged_df['SellerName'] = metrics_merged_df['BuyBoxSeller'].apply(
+                    lambda x: get_seller_name(KEEPA_API_KEY, domain, x)
+                )
+                
+                # Fill NaN values with 0 and handle nulls
+                metrics_merged_df.fillna(0, inplace=True)
+                metrics_merged_df = metrics_merged_df.where(metrics_merged_df.notnull(), None)
+                
+                # Add the final JSON representation to the product DataFrame
+                product_df['analysis.BuyBoxHistAnalysis'] = [
+                    metrics_merged_df.to_json(orient='records')
+                ] * len(product_df)
+            else:
+                print("No valid metrics to merge.")
             all_stock_data = pd.DataFrame()
 
             for offer in offers:
@@ -497,45 +536,42 @@ for document_num,document in enumerate(documents):
 
             ### Sales Estimation by ASIN from ProfitGuru
 
-            ### Sales Estimation by ASIN from ProfitGuru
+            url = f"https://www.profitguru.com/ext/api/asin/{asin}?re=0"
 
-            # url = f"https://www.profitguru.com/ext/api/asin/{asin}?re=0"
+            headers = {
+                "accept": "application/json, text/plain, */*",
+                "accept-language": "en-GB,en-US;q=0.9,en;q=0.8",
+                "priority": "u=1, i",
+                "referer": "https://www.profitguru.com/calculator/sales",
+                "sec-ch-ua": '"Google Chrome";v="131", "Chromium";v="131", "Not_A Brand";v="24"',
+                "sec-ch-ua-mobile": "?0",
+                "sec-ch-ua-platform": '"macOS"',
+                "sec-fetch-dest": "empty",
+                "sec-fetch-mode": "cors",
+                "sec-fetch-site": "same-origin",
+                "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
+                "x-app-type": "calc"
+            }
 
-            # headers = {
-            #     "accept": "application/json, text/plain, */*",
-            #     "accept-language": "en-GB,en-US;q=0.9,en;q=0.8",
-            #     "priority": "u=1, i",
-            #     "referer": "https://www.profitguru.com/calculator/sales",
-            #     "sec-ch-ua": '"Google Chrome";v="131", "Chromium";v="131", "Not_A Brand";v="24"',
-            #     "sec-ch-ua-mobile": "?0",
-            #     "cookie":"ir=MjQwMjozYTgwOjQyYmI6NDYxNDpiZGY0OmVlMzI6ZGJjYzoyYTBh; _gcl_au=1.1.1934589467.1736088199; _gid=GA1.2.1629279524.1736088200; _gat_gtag_UA_55885492_5=1; cf_clearance=fekd.mY4Zs6JNLQfBnQagUX5VNRfxLJGhTb7bGtB.nk-1736088201-1.2.1.1-e1Ba91B0TTGaz.bkLTlVe4TvaB58gBrk9q.cmDJlEWifVootP7GoS9240iDa2UQi_a3UAhdYUu.1Tc7x9CRE4fqUdlSe4HPHkFZaxmN34pyo08szZzdZANub62dnMB7mYS9sNGlJQRdSFxtz1O8kSmJycA9I6nBsg236reS2gv1mbumtdkHA9YTWLrIa8pK2CMun1kXkgiZtMTKOMDPJgoQFMWoI7zFAQiEYKXSIUL7ueO1EyhEEmuw2kZzIMB9XoIkTh9UzvARvhdSwl.SGzRjiQgJiDhddXyYxGH1ughNxmCXBQV9swNMwRHfxmwAK2IjOFNdVEm32FFI2V0gzICird4qxq3u4zpVlUJTwaEqbRORhGtOyAGrtlzddCxjpdDgJHLgX88GfdMqsPsIr5Q; _ga=GA1.1.1879257860.1736088200; _ga_BEGQYYES32=GS1.1.1736088199.1.1.1736088210.49.0.0; fda=1",
-            #     "sec-ch-ua-platform": '"macOS"',
-            #     "sec-fetch-dest": "empty",
-            #     "sec-fetch-mode": "cors",
-            #     "sec-fetch-site": "same-origin",
-            #     "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
-            #     "x-app-type": "calc"
-            # }
+            response = requests.get(url, headers=headers)
 
-            # response = requests.get(url, headers=headers)
+            sales_est = json.loads(response.text)
 
-            # print(response.status_code)
-
-            # sales_est = json.loads(response.text)
-
-            # url = f"https://www.profitguru.com/api/product/{sales_est.get('product').get('id')}/history/data"
+            url = f"https://www.profitguru.com/api/product/{sales_est.get('product').get('id')}/history/data"
 
 
-            # response = requests.get(url, headers=headers)
+            response = requests.get(url, headers=headers)
 
-            # sales_est_B = json.loads(response.text)
-            # sales_est_B.get('data').get('fees')
+            sales_est_B = json.loads(response.text)
+            sales_est_B.get('data').get('fees')
 
-            # product_df['analysis.ProfitGuruSalesEstimate']       = [sales_est.get('product').get('sales30')]
-            # product_df['caculation.ProfitGuruTotalFBACost']      =  [sales_est_B.get('data').get('fees').get('total')]
-            # product_df['caculation.ProfitGuruFBAFulfilmentCost'] =  [sales_est_B.get('data').get('fees').get('fba')]
-            # product_df['caculation.ProfitGuruAmazonReferalCost'] =  [sales_est_B.get('data').get('fees').get('ref')]
-            # product_df['caculation.ProfitGuruAmazonStorageCost'] =  [sales_est_B.get('data').get('fees').get('storage')]
+            product_df['analysis.ProfitGuruSalesEstimate']       = [sales_est.get('product').get('sales30')]
+            product_df['caculation.ProfitGuruTotalFBACost']      =  [sales_est_B.get('data').get('fees').get('total')]
+            product_df['caculation.ProfitGuruFBAFulfilmentCost'] =  [sales_est_B.get('data').get('fees').get('fba')]
+            product_df['caculation.ProfitGuruAmazonReferalCost'] =  [sales_est_B.get('data').get('fees').get('ref')]
+            product_df['caculation.ProfitGuruAmazonStorageCost'] =  [sales_est_B.get('data').get('fees').get('storage')]
+
+
 
             credentials=dict(
                     refresh_token=SP_API_REFRESH_TOKEN,
@@ -599,11 +635,11 @@ for document_num,document in enumerate(documents):
 
             # Input Data
             cost_price = cost_price
-            shipping_to_amazon = 0.8
-            storage_fee = 0
-            fba_fees = fba_fees
+            shipping_to_amazon = 0.5
+            referral_fee = sales_est_B.get('data').get('fees').get('ref')
+            storage_fee = sales_est_B.get('data').get('fees').get('storage')
+            fba_fees = sales_est_B.get('data').get('fees').get('fba')
             sell_price = products.payload.get('Summary').get('LowestPrices')[0].get('LandedPrice').get('Amount')
-            referral_fee = sell_price * ref_fee
 
             # Calculate Metrics
             metrics = calculate_metrics(sell_price, referral_fee, fba_fees, storage_fee, shipping_to_amazon, cost_price)
