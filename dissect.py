@@ -534,42 +534,42 @@ for document_num,document in enumerate(documents):
             product_df['analysis.MonthlySoldEarliestAppearance'] = product_df['analysis.MonthlySoldEarliestAppearance'].astype('str')
             product_df['analysis.MonthlySoldLatestAppearance'] = product_df['analysis.MonthlySoldLatestAppearance'].astype('str')
 
-            ### Sales Estimation by ASIN from ProfitGuru
+            # ### Sales Estimation by ASIN from ProfitGuru
 
-            url = f"https://www.profitguru.com/ext/api/asin/{asin}?re=0"
+            # url = f"https://www.profitguru.com/ext/api/asin/{asin}?re=0"
 
-            headers = {
-                "accept": "application/json, text/plain, */*",
-                "accept-language": "en-GB,en-US;q=0.9,en;q=0.8",
-                "priority": "u=1, i",
-                "referer": "https://www.profitguru.com/calculator/sales",
-                "sec-ch-ua": '"Google Chrome";v="131", "Chromium";v="131", "Not_A Brand";v="24"',
-                "sec-ch-ua-mobile": "?0",
-                "sec-ch-ua-platform": '"macOS"',
-                "sec-fetch-dest": "empty",
-                "sec-fetch-mode": "cors",
-                "sec-fetch-site": "same-origin",
-                "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
-                "x-app-type": "calc"
-            }
+            # headers = {
+            #     "accept": "application/json, text/plain, */*",
+            #     "accept-language": "en-GB,en-US;q=0.9,en;q=0.8",
+            #     "priority": "u=1, i",
+            #     "referer": "https://www.profitguru.com/calculator/sales",
+            #     "sec-ch-ua": '"Google Chrome";v="131", "Chromium";v="131", "Not_A Brand";v="24"',
+            #     "sec-ch-ua-mobile": "?0",
+            #     "sec-ch-ua-platform": '"macOS"',
+            #     "sec-fetch-dest": "empty",
+            #     "sec-fetch-mode": "cors",
+            #     "sec-fetch-site": "same-origin",
+            #     "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
+            #     "x-app-type": "calc"
+            # }
 
-            response = requests.get(url, headers=headers)
+            # response = requests.get(url, headers=headers)
 
-            sales_est = json.loads(response.text)
+            # sales_est = json.loads(response.text)
 
-            url = f"https://www.profitguru.com/api/product/{sales_est.get('product').get('id')}/history/data"
+            # url = f"https://www.profitguru.com/api/product/{sales_est.get('product').get('id')}/history/data"
 
 
-            response = requests.get(url, headers=headers)
+            # response = requests.get(url, headers=headers)
 
-            sales_est_B = json.loads(response.text)
-            sales_est_B.get('data').get('fees')
+            # sales_est_B = json.loads(response.text)
+            # sales_est_B.get('data').get('fees')
 
-            product_df['analysis.ProfitGuruSalesEstimate']       = [sales_est.get('product').get('sales30')]
-            product_df['caculation.ProfitGuruTotalFBACost']      =  [sales_est_B.get('data').get('fees').get('total')]
-            product_df['caculation.ProfitGuruFBAFulfilmentCost'] =  [sales_est_B.get('data').get('fees').get('fba')]
-            product_df['caculation.ProfitGuruAmazonReferalCost'] =  [sales_est_B.get('data').get('fees').get('ref')]
-            product_df['caculation.ProfitGuruAmazonStorageCost'] =  [sales_est_B.get('data').get('fees').get('storage')]
+            # product_df['analysis.ProfitGuruSalesEstimate']       = [sales_est.get('product').get('sales30')]
+            # product_df['caculation.ProfitGuruTotalFBACost']      =  [sales_est_B.get('data').get('fees').get('total')]
+            # product_df['caculation.ProfitGuruFBAFulfilmentCost'] =  [sales_est_B.get('data').get('fees').get('fba')]
+            # product_df['caculation.ProfitGuruAmazonReferalCost'] =  [sales_est_B.get('data').get('fees').get('ref')]
+            # product_df['caculation.ProfitGuruAmazonStorageCost'] =  [sales_est_B.get('data').get('fees').get('storage')]
 
 
 
